@@ -1035,7 +1035,7 @@
             <li><a href="#inspiration">// INSPIRATION</a></li>
             <li><a href="#projects">// PROJECTS</a></li>
             <li><a href="#sns">// NETWORK</a></li>
-            <li><a href="#contact">// CONTACT</a></li>
+            <li><a href="#partnership">// PARTNERSHIP</a></li>
         </ul>
     </nav>
 
@@ -1049,7 +1049,7 @@
         <div id="typewriter"></div>
         <div class="hero-btns">
             <a href="#projects" class="btn btn-primary">⬡ VIEW PROJECTS</a>
-            <a href="#contact" class="btn btn-secondary">◈ OPEN CHANNEL</a>
+            <a href="#partnership" class="btn btn-secondary">◈ PARTNERSHIP</a>
         </div>
     </section>
 
@@ -1149,28 +1149,28 @@
         </div>
     </section>
 
-    <!-- CONTACT -->
-    <section id="contact">
+    <!-- PARTNERSHIP -->
+    <section id="partnership">
         <div class="reveal">
-            <div class="section-label">UPLINK_REQUEST</div>
-            <h2 class="section-title">OPEN A <span>CHANNEL</span></h2>
+            <div class="section-label">PARTNERSHIP_REQ</div>
+            <h2 class="section-title">PARTNERSHIP <span>INQUIRY</span></h2>
         </div>
         <div class="contact-inner reveal">
             <div class="contact-grid">
                 <div class="input-group">
-                    <label class="input-label">// NAME_INPUT</label>
-                    <input id="contact-name" type="text" class="input-field" placeholder="ENTER YOUR NAME">
+                    <label class="input-label">// NAME_OR_COMPANY</label>
+                    <input id="contact-name" type="text" class="input-field" placeholder="성함 또는 기업명">
                 </div>
                 <div class="input-group">
                     <label class="input-label">// EMAIL_INPUT</label>
                     <input id="contact-email" type="email" class="input-field" placeholder="your@email.com">
                 </div>
                 <div class="input-group full">
-                    <label class="input-label">// MESSAGE_DATA</label>
-                    <textarea id="contact-message" class="input-field" rows="5" placeholder="TRANSMIT YOUR MESSAGE..."></textarea>
+                    <label class="input-label">// INQUIRY_DETAILS</label>
+                    <textarea id="contact-message" class="input-field" rows="5" placeholder="제휴 관련 문의 내용을 입력해주세요..."></textarea>
                 </div>
             </div>
-            <button class="send-btn" id="send-btn">⬡ TRANSMIT_MESSAGE</button>
+            <button class="send-btn" id="send-btn">⬡ TRANSMIT_INQUIRY</button>
             <div id="form-status" style="margin-top:16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:0.2em;min-height:20px;"></div>
         </div>
     </section>
@@ -1512,7 +1512,7 @@ document.getElementById('send-btn').addEventListener('click', async function() {
   status.textContent = '// CONNECTING TO SERVER...';
 
   try {
-    const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+    const res = await fetch('https://formspree.io/f/xkoqkdkg', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ name, email, message })
@@ -1523,12 +1523,12 @@ document.getElementById('send-btn').addEventListener('click', async function() {
       this.style.borderColor = 'var(--cyan)';
       this.style.color = 'var(--cyan)';
       status.style.color = 'var(--cyan)';
-      status.textContent = '// MESSAGE_SENT — njh3606@gmail.com 으로 전달됐습니다';
+      status.textContent = '// INQUIRY_SENT — 제휴 문의가 성공적으로 전달되었습니다';
       document.getElementById('contact-name').value = '';
       document.getElementById('contact-email').value = '';
       document.getElementById('contact-message').value = '';
       setTimeout(() => {
-        this.textContent = '⬡ TRANSMIT_MESSAGE';
+        this.textContent = '⬡ TRANSMIT_INQUIRY';
         this.style.borderColor = '';
         this.style.color = '';
         this.disabled = false;
@@ -1538,7 +1538,7 @@ document.getElementById('send-btn').addEventListener('click', async function() {
       throw new Error('Server error');
     }
   } catch(err) {
-    this.textContent = '⬡ TRANSMIT_MESSAGE';
+    this.textContent = '⬡ TRANSMIT_INQUIRY';
     this.disabled = false;
     status.style.color = 'var(--magenta)';
     status.textContent = '// ERROR: 전송 실패 — 다시 시도해주세요';
