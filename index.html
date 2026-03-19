@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JEONGHO NOH — PORTFOLIO</title>
+    <meta name="description" content="Jeongho Noh — 잡다한 것을 올리는 개인 포트폴리오">
+    <meta property="og:title" content="JEONGHO NOH — PORTFOLIO">
+    <meta property="og:description" content="잡다한 것을 올리는 개인 포트폴리오">
+    <meta property="og:type" content="website">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #00f5ff;
+            --magenta: #ff006e;
+            --yellow: #ffe600;
+            --dark: #030712;
+            --darker: #010409;
+            --panel: rgba(0,245,255,0.04);
+            --border: rgba(0,245,255,0.2);
+            --text: #c8e6f0;
+            --glow-c: 0 0 10px #00f5ff, 0 0 30px rgba(0,245,255,0.3);
+            --glow-m: 0 0 10px #ff006e, 0 0 30px rgba(255,0,110,0.3);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--darker);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 16px;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* ═══════════════ CURSOR ═══════════════ */
+        #cursor {
+            position: fixed;
+            z-index: 9999;
+            width: 20px;
+            height: 20px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+        }
+
+            #cursor::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border: 1.5px solid var(--cyan);
+                clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+                animation: cursorSpin 3s linear infinite;
+            }
+
+            #cursor::after {
+                content: '';
+                position: absolute;
+                width: 4px;
+                height: 4px;
+                background: var(--magenta);
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                box-shadow: var(--glow-m);
+            }
+
+        @keyframes cursorSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ═══════════════ SCANLINES ═══════════════ */
+        #scanlines {
+            position: fixed;
+            inset: 0;
+            z-index: 998;
+            pointer-events: none;
+            background: repeating-linear-gradient( 0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px );
+        }
+
+        /* ═══════════════ NOISE ═══════════════ */
+        #noise {
+            position: fixed;
+            inset: 0;
+            z-index: 997;
+            pointer-events: none;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ═══════════════ CANVAS BG ═══════════════ */
+        #grid-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ═══════════════ NAV ═══════════════ */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 48px;
+            background: linear-gradient(to bottom, rgba(3,7,18,0.95), transparent);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            font-weight: 900;
+            color: var(--cyan);
+            letter-spacing: 0.2em;
+            text-shadow: var(--glow-c);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+            .nav-links a {
+                font-family: 'Share Tech Mono', monospace;
+                font-size: 11px;
+                color: var(--text);
+                text-decoration: none;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                position: relative;
+                transition: color 0.3s;
+            }
+
+                .nav-links a::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -4px;
+                    left: 0;
+                    right: 0;
+                    height: 1px;
+                    background: var(--cyan);
+                    transform: scaleX(0);
+                    transition: transform 0.3s;
+                }
+
+                .nav-links a:hover {
+                    color: var(--cyan);
+                }
+
+                    .nav-links a:hover::after {
+                        transform: scaleX(1);
+                    }
+
+        /* ═══════════════ HERO ═══════════════ */
+        #hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 48px 80px;
+            overflow: hidden;
+        }
+
+        .hero-status {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--magenta);
+            letter-spacing: 0.3em;
+            margin-bottom: 24px;
+            animation: blink 2s step-end infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .hero-name {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(48px, 10vw, 120px);
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -0.02em;
+            color: #fff;
+            position: relative;
+        }
+
+            .hero-name .glitch {
+                position: relative;
+                display: inline-block;
+            }
+
+                .hero-name .glitch::before,
+                .hero-name .glitch::after {
+                    content: attr(data-text);
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                }
+
+                .hero-name .glitch::before {
+                    color: var(--cyan);
+                    animation: glitch1 3s infinite linear;
+                    clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+                    transform: translateX(-3px);
+                }
+
+                .hero-name .glitch::after {
+                    color: var(--magenta);
+                    animation: glitch2 3s infinite linear;
+                    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+                    transform: translateX(3px);
+                }
+
+        @keyframes glitch1 {
+            0%, 90%, 100% {
+                transform: translateX(-3px) skewX(0deg);
+                opacity: 0.8;
+            }
+
+            92% {
+                transform: translateX(6px) skewX(-5deg);
+                opacity: 1;
+            }
+
+            94% {
+                transform: translateX(-2px) skewX(3deg);
+                opacity: 0.9;
+            }
+
+            96% {
+                transform: translateX(4px) skewX(0deg);
+                opacity: 1;
+            }
+        }
+
+        @keyframes glitch2 {
+            0%, 90%, 100% {
+                transform: translateX(3px) skewX(0deg);
+                opacity: 0.8;
+            }
+
+            92% {
+                transform: translateX(-6px) skewX(5deg);
+                opacity: 1;
+            }
+
+            94% {
+                transform: translateX(2px) skewX(-3deg);
+                opacity: 0.9;
+            }
+
+            96% {
+                transform: translateX(-4px) skewX(0deg);
+                opacity: 1;
+            }
+        }
+
+        .hero-sub {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            color: var(--cyan);
+            letter-spacing: 0.4em;
+            margin-top: 20px;
+            text-shadow: var(--glow-c);
+        }
+
+        #typewriter {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+            color: var(--yellow);
+            margin-top: 16px;
+            letter-spacing: 0.1em;
+            min-height: 20px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            margin-top: 56px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 14px 32px;
+            position: relative;
+            cursor: none;
+            clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--cyan);
+            color: var(--dark);
+            box-shadow: var(--glow-c);
+        }
+
+            .btn-primary:hover {
+                background: #fff;
+                box-shadow: 0 0 20px #00f5ff, 0 0 60px rgba(0,245,255,0.5);
+                transform: translateY(-2px);
+            }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--magenta);
+            border: 1px solid var(--magenta);
+            box-shadow: var(--glow-m);
+        }
+
+            .btn-secondary:hover {
+                background: var(--magenta);
+                color: var(--dark);
+                transform: translateY(-2px);
+            }
+
+        /* ═══════════════ SECTIONS ═══════════════ */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 48px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--magenta);
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+            .section-label::before {
+                content: '';
+                width: 40px;
+                height: 1px;
+                background: var(--magenta);
+                box-shadow: var(--glow-m);
+            }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(28px, 5vw, 52px);
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 56px;
+            line-height: 1;
+        }
+
+            .section-title span {
+                color: var(--cyan);
+                text-shadow: var(--glow-c);
+            }
+
+        /* ═══════════════ ABOUT ═══════════════ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .about-text p {
+            font-size: 17px;
+            line-height: 1.8;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .stat-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.3s;
+            clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+        }
+
+            .stat-card:hover {
+                border-color: var(--cyan);
+            }
+
+            .stat-card::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-style: solid;
+                border-width: 0 16px 16px 0;
+                border-color: transparent var(--cyan) transparent transparent;
+                opacity: 0.5;
+            }
+
+        .stat-num {
+            font-family: 'Orbitron', monospace;
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--cyan);
+            line-height: 1;
+            text-shadow: var(--glow-c);
+        }
+
+        .stat-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--warm-gray, #7a8a9a);
+            letter-spacing: 0.2em;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        /* ═══════════════ SKILLS BAR ═══════════════ */
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .skill-item {
+        }
+
+        .skill-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .skill-name {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.15em;
+            color: var(--text);
+        }
+
+        .skill-pct {
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            color: var(--cyan);
+        }
+
+        .skill-track {
+            height: 3px;
+            background: rgba(255,255,255,0.05);
+            position: relative;
+            overflow: visible;
+        }
+
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 8px var(--cyan);
+            position: relative;
+        }
+
+            .skill-fill::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 50%;
+                width: 8px;
+                height: 8px;
+                background: #fff;
+                border-radius: 50%;
+                transform: translateY(-50%);
+                box-shadow: 0 0 10px var(--cyan);
+            }
+
+        /* ═══════════════ PROJECTS ═══════════════ */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .project-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: none;
+            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+        }
+
+            .project-card::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(0,245,255,0.05), transparent);
+                opacity: 0;
+                transition: opacity 0.4s;
+            }
+
+            .project-card:hover {
+                border-color: var(--cyan);
+                transform: translateY(-4px);
+            }
+
+                .project-card:hover::before {
+                    opacity: 1;
+                }
+
+            .project-card::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-style: solid;
+                border-width: 0 20px 20px 0;
+                border-color: transparent var(--cyan) transparent transparent;
+                opacity: 0.4;
+                transition: opacity 0.3s;
+            }
+
+            .project-card:hover::after {
+                opacity: 1;
+            }
+
+        .project-num {
+            font-family: 'Orbitron', monospace;
+            font-size: 11px;
+            color: var(--magenta);
+            letter-spacing: 0.3em;
+            margin-bottom: 16px;
+        }
+
+        .project-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .project-desc {
+            font-size: 14px;
+            color: rgba(200,230,240,0.7);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--cyan);
+            border: 1px solid rgba(0,245,255,0.3);
+            padding: 4px 10px;
+            letter-spacing: 0.15em;
+            clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+        }
+
+        /* ═══════════════ SNS ═══════════════ */
+        .sns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .sns-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border: 1px solid var(--border);
+            padding: 20px 24px;
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+        }
+
+            .sns-card::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                width: 3px;
+                background: var(--cyan);
+                transform: scaleY(0);
+                transition: transform 0.3s;
+            }
+
+            .sns-card:hover {
+                border-color: var(--cyan);
+                background: var(--panel);
+            }
+
+                .sns-card:hover::before {
+                    transform: scaleY(1);
+                }
+
+        .sns-icon {
+            font-size: 24px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .sns-info {
+        }
+
+        .sns-platform {
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            color: var(--cyan);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .sns-handle {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: rgba(200,230,240,0.5);
+            margin-top: 2px;
+        }
+
+        /* ═══════════════ CONTACT ═══════════════ */
+        .contact-inner {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 48px;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, calc(100% - 32px) 0, 100% 32px, 100% 100%, 32px 100%, 0 calc(100% - 32px));
+        }
+
+            .contact-inner::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                background: radial-gradient(ellipse at center, rgba(0,245,255,0.03) 0%, transparent 60%);
+                pointer-events: none;
+            }
+
+            .contact-inner::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                border-style: solid;
+                border-width: 0 32px 32px 0;
+                border-color: transparent var(--cyan) transparent transparent;
+                opacity: 0.5;
+            }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+            .input-group.full {
+                grid-column: 1 / -1;
+            }
+
+        .input-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 10px;
+            color: var(--cyan);
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+
+        .input-field {
+            background: rgba(0,245,255,0.03);
+            border: 1px solid rgba(0,245,255,0.2);
+            color: #fff;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px;
+            padding: 14px 16px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            resize: none;
+            cursor: none;
+        }
+
+            .input-field:focus {
+                border-color: var(--cyan);
+                box-shadow: 0 0 0 1px rgba(0,245,255,0.2), inset 0 0 20px rgba(0,245,255,0.05);
+            }
+
+            .input-field::placeholder {
+                color: rgba(200,230,240,0.2);
+            }
+
+        .send-btn {
+            margin-top: 24px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            padding: 16px 48px;
+            background: transparent;
+            border: 1px solid var(--magenta);
+            color: var(--magenta);
+            cursor: none;
+            clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .send-btn::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: var(--magenta);
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+                z-index: -1;
+            }
+
+            .send-btn:hover {
+                color: var(--dark);
+                box-shadow: var(--glow-m);
+            }
+
+                .send-btn:hover::before {
+                    transform: translateX(0);
+                }
+
+        /* ═══════════════ FOOTER ═══════════════ */
+        footer {
+            position: relative;
+            z-index: 1;
+            border-top: 1px solid var(--border);
+            padding: 32px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: rgba(200,230,240,0.3);
+            letter-spacing: 0.15em;
+        }
+
+        /* ═══════════════ SCROLL REVEAL ═══════════════ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        /* ═══════════════ HEX LOADER ═══════════════ */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: var(--darker);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            transition: opacity 0.6s ease;
+        }
+
+            #loader.fade-out {
+                opacity: 0;
+                pointer-events: none;
+            }
+
+        .loader-hex {
+            width: 60px;
+            height: 60px;
+            position: relative;
+        }
+
+            .loader-hex::before {
+                content: '⬡';
+                font-size: 60px;
+                color: var(--cyan);
+                animation: hexSpin 1.5s linear infinite;
+                display: block;
+                text-shadow: var(--glow-c);
+                line-height: 1;
+            }
+
+        @keyframes hexSpin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--cyan);
+            letter-spacing: 0.3em;
+        }
+
+        .loader-progress {
+            width: 200px;
+            height: 2px;
+            background: rgba(0,245,255,0.1);
+            overflow: hidden;
+        }
+
+        .loader-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--magenta));
+            animation: loadBar 1.8s ease forwards;
+            box-shadow: 0 0 8px var(--cyan);
+        }
+
+        @keyframes loadBar {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        /* ═══════════════ CORNER DECORATIONS ═══════════════ */
+        .corner-tl, .corner-br {
+            position: fixed;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        .corner-tl {
+            top: 0;
+            left: 0;
+        }
+
+        .corner-br {
+            bottom: 0;
+            right: 0;
+            transform: rotate(180deg);
+        }
+
+            .corner-tl svg, .corner-br svg {
+                opacity: 0.2;
+            }
+
+        /* ═══════════════ SIDE COORD ═══════════════ */
+        #coords {
+            position: fixed;
+            right: 24px;
+            bottom: 50%;
+            transform: translateY(50%) rotate(90deg);
+            transform-origin: right center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 9px;
+            color: rgba(0,245,255,0.3);
+            letter-spacing: 0.2em;
+            z-index: 50;
+            pointer-events: none;
+        }
+
+        /* ═══════════════ GLITCH TRANSITION ═══════════════ */
+        #glitch-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9990;
+            pointer-events: none;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+            #glitch-overlay .gl-slice {
+                position: absolute;
+                left: 0;
+                right: 0;
+                background: var(--darker);
+                transform: translateX(0);
+            }
+
+            #glitch-overlay .gl-line-c {
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: var(--cyan);
+                box-shadow: var(--glow-c);
+                opacity: 0;
+            }
+
+            #glitch-overlay .gl-line-m {
+                position: absolute;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: var(--magenta);
+                box-shadow: var(--glow-m);
+                opacity: 0;
+            }
+
+            #glitch-overlay.active {
+                visibility: visible;
+                opacity: 1;
+            }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            nav {
+                padding: 16px 24px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            section {
+                padding: 80px 24px;
+            }
+
+            .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 8px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="loader">
+        <div class="loader-hex"></div>
+        <div class="loader-text">SYSTEM INITIALIZING...</div>
+        <div class="loader-progress"><div class="loader-bar"></div></div>
+    </div>
+
+    <!-- GLITCH TRANSITION OVERLAY -->
+    <div id="glitch-overlay"></div>
+
+    <!-- CURSOR -->
+    <div id="cursor"></div>
+
+    <!-- OVERLAYS -->
+    <div id="scanlines"></div>
+    <div id="noise"></div>
+    <canvas id="grid-canvas"></canvas>
+
+    <!-- CORNER DECO -->
+    <div class="corner-tl">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <path d="M0 0 L40 0 L40 4 L4 4 L4 40 L0 40 Z" fill="#00f5ff" />
+            <path d="M12 12 L28 12 L28 16 L16 16 L16 28 L12 28 Z" fill="#00f5ff" opacity="0.5" />
+        </svg>
+    </div>
+    <div class="corner-br">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+            <path d="M0 0 L40 0 L40 4 L4 4 L4 40 L0 40 Z" fill="#00f5ff" />
+            <path d="M12 12 L28 12 L28 16 L16 16 L16 28 L12 28 Z" fill="#00f5ff" opacity="0.5" />
+        </svg>
+    </div>
+
+    <!-- SIDE COORDS -->
+    <div id="coords">X:35.1796° N — Y:129.0756° E — Z:0.0</div>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-logo">◈ JH_NOH</div>
+        <ul class="nav-links">
+            <li><a href="#about">// ABOUT</a></li>
+            <li><a href="#projects">// PROJECTS</a></li>
+            <li><a href="#sns">// NETWORK</a></li>
+            <li><a href="#contact">// CONTACT</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="hero-status">◉ ONLINE — JEONGHO NOH</div>
+        <h1 class="hero-name">
+            <span class="glitch" data-text="JEONGHO NOH">JEONGHO NOH</span>
+        </h1>
+        <div class="hero-sub">잡다한 것을 올립니다</div>
+        <div id="typewriter"></div>
+        <div class="hero-btns">
+            <a href="#projects" class="btn btn-primary">⬡ VIEW PROJECTS</a>
+            <a href="#contact" class="btn btn-secondary">◈ OPEN CHANNEL</a>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="reveal">
+            <div class="section-label">SUBJECT_DATA</div>
+            <h2 class="section-title">ABOUT <span>ME</span></h2>
+        </div>
+        <div class="about-grid reveal">
+            <div class="about-text">
+                <p>안녕하세요, 노정호입니다. 딱히 한 가지를 잘한다고 말하기 어렵고, 이것저것 관심 가는 대로 만들고 기록하는 사람입니다.</p>
+                <p>코드, 디자인, 글, 사진, 아이디어 — 장르 불문 잡다하게 올립니다. 완성도보다 시도를 즐깁니다.</p>
+                <div style="margin-top:32px;">
+                    <div class="section-label" style="margin-bottom:20px;">SKILL_SET</div>
+                    <div class="skills-list" id="skills-list">
+                        <div class="skill-item"><div class="skill-meta"><span class="skill-name">이것저것 만들기</span><span class="skill-pct">??%</span></div><div class="skill-track"><div class="skill-fill" data-pct="88"></div></div></div>
+                        <div class="skill-item"><div class="skill-meta"><span class="skill-name">새벽에 삽질하기</span><span class="skill-pct">??%</span></div><div class="skill-track"><div class="skill-fill" data-pct="95"></div></div></div>
+                        <div class="skill-item"><div class="skill-meta"><span class="skill-name">완성 못 하고 방치</span><span class="skill-pct">??%</span></div><div class="skill-track"><div class="skill-fill" data-pct="72"></div></div></div>
+                        <div class="skill-item"><div class="skill-meta"><span class="skill-name">그래도 다시 시작</span><span class="skill-pct">??%</span></div><div class="skill-track"><div class="skill-fill" data-pct="99"></div></div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card"><div class="stat-num" data-target="?">?</div><div class="stat-label">PROJECTS</div></div>
+                <div class="stat-card"><div class="stat-num" data-target="∞">∞</div><div class="stat-label">아이디어</div></div>
+                <div class="stat-card"><div class="stat-num" data-target="0">0</div><div class="stat-label">완성작 🙃</div></div>
+                <div class="stat-card"><div class="stat-num" data-target="99">0</div><div class="stat-label">커피 ☕</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+        <div class="reveal">
+            <div class="section-label">DATA_FILES</div>
+            <h2 class="section-title">SELECTED <span>WORKS</span></h2>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <div class="project-num">// PROJ_001</div>
+                <div class="project-title">이 포트폴리오</div>
+                <div class="project-desc">뭔가 있어 보이고 싶어서 만든 개인 포트폴리오 사이트. 사이버펑크 느낌이 멋있어 보였음.</div>
+                <div class="project-tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-num">// PROJ_002</div>
+                <div class="project-title">미정</div>
+                <div class="project-desc">아직 뭘 만들지 모르겠음. 아마 새벽에 갑자기 떠오른 아이디어로 만들게 될 것 같음.</div>
+                <div class="project-tags"><span class="tag">?????</span><span class="tag">TBD</span></div>
+            </div>
+            <div class="project-card reveal">
+                <div class="project-num">// PROJ_003</div>
+                <div class="project-title">또 미정</div>
+                <div class="project-desc">잡다하게 올린다고 했으니 뭔가 올라가긴 할 것임. 기대해주세요 (사실 저도 모름).</div>
+                <div class="project-tags"><span class="tag">SOON™</span><span class="tag">아마도</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SNS -->
+    <section id="sns">
+        <div class="reveal">
+            <div class="section-label">EXTERNAL_LINKS</div>
+            <h2 class="section-title">FIND ME ON <span>NETWORK</span></h2>
+        </div>
+        <div class="sns-grid reveal">
+            <a href="#" class="sns-card" style="opacity:0.4; pointer-events:none;">
+                <div class="sns-icon">🐙</div>
+                <div class="sns-info"><div class="sns-platform">GITHUB</div><div class="sns-handle">// COMING SOON</div></div>
+            </a>
+            <a href="#" class="sns-card" style="opacity:0.4; pointer-events:none;">
+                <div class="sns-icon">🔗</div>
+                <div class="sns-info"><div class="sns-platform">LINKEDIN</div><div class="sns-handle">// COMING SOON</div></div>
+            </a>
+            <a href="#" class="sns-card" style="opacity:0.4; pointer-events:none;">
+                <div class="sns-icon">🐦</div>
+                <div class="sns-info"><div class="sns-platform">TWITTER/X</div><div class="sns-handle">// COMING SOON</div></div>
+            </a>
+            <a href="#" class="sns-card" style="opacity:0.4; pointer-events:none;">
+                <div class="sns-icon">📸</div>
+                <div class="sns-info"><div class="sns-platform">INSTAGRAM</div><div class="sns-handle">// COMING SOON</div></div>
+            </a>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+        <div class="reveal">
+            <div class="section-label">UPLINK_REQUEST</div>
+            <h2 class="section-title">OPEN A <span>CHANNEL</span></h2>
+        </div>
+        <div class="contact-inner reveal">
+            <div class="contact-grid">
+                <div class="input-group">
+                    <label class="input-label">// NAME_INPUT</label>
+                    <input id="contact-name" type="text" class="input-field" placeholder="ENTER YOUR NAME">
+                </div>
+                <div class="input-group">
+                    <label class="input-label">// EMAIL_INPUT</label>
+                    <input id="contact-email" type="email" class="input-field" placeholder="your@email.com">
+                </div>
+                <div class="input-group full">
+                    <label class="input-label">// MESSAGE_DATA</label>
+                    <textarea id="contact-message" class="input-field" rows="5" placeholder="TRANSMIT YOUR MESSAGE..."></textarea>
+                </div>
+            </div>
+            <button class="send-btn" id="send-btn">⬡ TRANSMIT_MESSAGE</button>
+            <div id="form-status" style="margin-top:16px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:0.2em;min-height:20px;"></div>
+        </div>
+    </section>
+
+    <footer>
+        <div>© 2026 // JEONGHO NOH — ALL RIGHTS RESERVED</div>
+        <div>BUILT WITH: HTML + CSS + JS</div>
+    </footer>
+
+    <script>
+// ═══════════════ LOADER ═══════════════
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.classList.add('fade-out');
+    setTimeout(() => loader.remove(), 600);
+  }, 1800);
+});
+
+// ═══════════════ CURSOR ═══════════════
+const cursor = document.getElementById('cursor');
+let mx = 0, my = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+document.querySelectorAll('a, button, .project-card, .sns-card, input, textarea').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.style.transform = 'translate(-50%,-50%) scale(1.8)');
+  el.addEventListener('mouseleave', () => cursor.style.transform = 'translate(-50%,-50%) scale(1)');
+});
+
+// ═══════════════ GRID CANVAS ═══════════════
+const canvas = document.getElementById('grid-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resizeCanvas() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+// Grid
+function drawGrid() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Perspective grid
+  const vanishX = W / 2, vanishY = H * 0.55;
+  const cols = 20, rows = 12;
+  ctx.strokeStyle = 'rgba(0,245,255,0.06)';
+  ctx.lineWidth = 1;
+
+  // Horizontal lines
+  for (let r = 0; r <= rows; r++) {
+    const t = r / rows;
+    const y = vanishY + (H - vanishY) * (t * t);
+    const spread = (t * t) * W * 0.8;
+    ctx.beginPath();
+    ctx.moveTo(vanishX - spread / 2, y);
+    ctx.lineTo(vanishX + spread / 2, y);
+    ctx.stroke();
+  }
+
+  // Vertical lines
+  for (let c = 0; c <= cols; c++) {
+    const t = (c / cols) - 0.5;
+    const startX = vanishX + t * 60;
+    const endX = vanishX + t * W * 0.8;
+    ctx.beginPath();
+    ctx.moveTo(startX, vanishY);
+    ctx.lineTo(endX, H);
+    ctx.stroke();
+  }
+}
+
+// Particles
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.size = Math.random() * 1.5 + 0.3;
+    this.speed = Math.random() * 0.4 + 0.1;
+    this.opacity = Math.random() * 0.5 + 0.1;
+    this.color = Math.random() > 0.5 ? '0,245,255' : '255,0,110';
+  }
+  update() {
+    this.y -= this.speed;
+    if (this.y < 0) this.reset(), this.y = H;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.opacity})`;
+    ctx.fill();
+  }
+}
+
+for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+function animate() {
+  requestAnimationFrame(animate);
+  drawGrid();
+  particles.forEach(p => { p.update(); p.draw(); });
+}
+animate();
+
+// ═══════════════ TYPEWRITER ═══════════════
+const phrases = [
+  '잡다한 것을 올립니다',
+  'MAKING THINGS JUST BECAUSE',
+  '이것저것 만들고 기록합니다',
+  'CURIOUS ABOUT EVERYTHING'
+];
+let pi = 0, ci = 0, typing = true;
+const tw = document.getElementById('typewriter');
+
+function typeLoop() {
+  const phrase = phrases[pi];
+  if (typing) {
+    tw.textContent = '> ' + phrase.slice(0, ci + 1) + '_';
+    ci++;
+    if (ci >= phrase.length) { typing = false; setTimeout(typeLoop, 2000); return; }
+  } else {
+    tw.textContent = '> ' + phrase.slice(0, ci) + '_';
+    ci--;
+    if (ci < 0) { typing = true; ci = 0; pi = (pi + 1) % phrases.length; }
+  }
+  setTimeout(typeLoop, typing ? 60 : 30);
+}
+typeLoop();
+
+// ═══════════════ SCROLL REVEAL ═══════════════
+const reveals = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 100);
+    }
+  });
+}, { threshold: 0.1 });
+reveals.forEach(r => revealObs.observe(r));
+
+// ═══════════════ SKILL BARS ═══════════════
+const skillObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.skill-fill').forEach(bar => {
+        const pct = bar.dataset.pct;
+        bar.style.width = pct + '%';
+      });
+      skillObs.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+const skillsList = document.getElementById('skills-list');
+if (skillsList) skillObs.observe(skillsList);
+
+// ═══════════════ COUNTER ═══════════════
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.querySelectorAll('.stat-num').forEach(el => {
+        const target = +el.dataset.target;
+        let cur = 0;
+        const step = Math.ceil(target / 50);
+        const t = setInterval(() => {
+          cur = Math.min(cur + step, target);
+          el.textContent = cur;
+          if (cur >= target) clearInterval(t);
+        }, 30);
+      });
+      counterObs.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+const statGrid = document.querySelector('.stat-grid');
+if (statGrid) counterObs.observe(statGrid);
+
+// ═══════════════ COORDINATES ═══════════════
+const coordEl = document.getElementById('coords');
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX / W * 360 - 180).toFixed(4);
+  const y = (e.clientY / H * 180 - 90).toFixed(4);
+  coordEl.textContent = `X:${x}° — Y:${y}° — Z:${window.scrollY}`;
+});
+
+// ═══════════════ GLITCH ON SCROLL ═══════════════
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+  const cur = window.scrollY;
+  if (Math.abs(cur - lastScroll) > 50) {
+    const glitch = document.querySelector('.glitch');
+    glitch.style.filter = 'hue-rotate(90deg) saturate(3)';
+    setTimeout(() => glitch.style.filter = '', 150);
+    lastScroll = cur;
+  }
+});
+
+
+// ═══════════════ GLITCH SECTION TRANSITION ═══════════════
+const overlay = document.getElementById('glitch-overlay');
+
+function buildOverlay() {
+  overlay.innerHTML = '';
+  const H = window.innerHeight;
+  const sliceCount = 12;
+  for (let i = 0; i < sliceCount; i++) {
+    const sl = document.createElement('div');
+    sl.className = 'gl-slice';
+    const h = H / sliceCount;
+    sl.style.top = (i * h) + 'px';
+    sl.style.height = h + 'px';
+    overlay.appendChild(sl);
+  }
+  // cyan lines
+  [0.2, 0.45, 0.72].forEach(pos => {
+    const ln = document.createElement('div');
+    ln.className = 'gl-line-c';
+    ln.style.top = (pos * H) + 'px';
+    overlay.appendChild(ln);
+  });
+  // magenta lines
+  [0.33, 0.61, 0.88].forEach(pos => {
+    const ln = document.createElement('div');
+    ln.className = 'gl-line-m';
+    ln.style.top = (pos * H) + 'px';
+    overlay.appendChild(ln);
+  });
+}
+
+function glitchTransition(callback) {
+  buildOverlay();
+  overlay.classList.add('active');
+  const slices = overlay.querySelectorAll('.gl-slice');
+  const linesC = overlay.querySelectorAll('.gl-line-c');
+  const linesM = overlay.querySelectorAll('.gl-line-m');
+
+  // Phase 1: slices fly in with random offsets (0–200ms)
+  slices.forEach((sl, i) => {
+    const dir = i % 2 === 0 ? 1 : -1;
+    const dist = (Math.random() * 60 + 20) * dir;
+    sl.style.transition = 'none';
+    sl.style.opacity = '0';
+    sl.style.transform = `translateX(${dist * 2}px)`;
+    requestAnimationFrame(() => {
+      sl.style.transition = `transform ${0.15 + Math.random() * 0.1}s cubic-bezier(0.25,0.46,0.45,0.94), opacity 0.08s`;
+      sl.style.opacity = '1';
+      sl.style.transform = `translateX(${dist}px)`;
+    });
+  });
+
+  // Phase 2: lines flash
+  setTimeout(() => {
+    linesC.forEach(ln => { ln.style.opacity = '1'; });
+    linesM.forEach(ln => { ln.style.opacity = '0.7'; });
+  }, 120);
+
+  // Phase 3: full cover — slices snap to 0
+  setTimeout(() => {
+    slices.forEach(sl => {
+      sl.style.transition = `transform 0.08s steps(2), opacity 0.05s`;
+      sl.style.transform = 'translateX(0)';
+      sl.style.opacity = '1';
+    });
+  }, 220);
+
+  // Phase 4: execute callback (scroll to section)
+  setTimeout(() => {
+    callback();
+  }, 320);
+
+  // Phase 5: glitch out — slices scatter opposite direction
+  setTimeout(() => {
+    slices.forEach((sl, i) => {
+      const dir = i % 2 === 0 ? -1 : 1;
+      const dist = (Math.random() * 80 + 30) * dir;
+      sl.style.transition = `transform ${0.1 + Math.random() * 0.12}s cubic-bezier(0.55,0,1,0.45), opacity 0.15s`;
+      sl.style.transform = `translateX(${dist}px)`;
+      sl.style.opacity = '0';
+    });
+    linesC.forEach(ln => { ln.style.opacity = '0'; });
+    linesM.forEach(ln => { ln.style.opacity = '0'; });
+  }, 420);
+
+  // Phase 6: hide overlay
+  setTimeout(() => {
+    overlay.classList.remove('active');
+    overlay.innerHTML = '';
+  }, 620);
+}
+
+// Hook nav links
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', e => {
+    const href = link.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+    glitchTransition(() => {
+      target.scrollIntoView({ behavior: 'instant' });
+    });
+  });
+});
+
+// Hook hero buttons
+document.querySelectorAll('.hero-btns .btn').forEach(btn => {
+  btn.addEventListener('click', e => {
+    const href = btn.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+    glitchTransition(() => {
+      target.scrollIntoView({ behavior: 'instant' });
+    });
+  });
+});
+
+// ═══════════════ SEND BUTTON — FORMSPREE ═══════════════
+document.getElementById('send-btn').addEventListener('click', async function() {
+  const name    = document.getElementById('contact-name').value.trim();
+  const email   = document.getElementById('contact-email').value.trim();
+  const message = document.getElementById('contact-message').value.trim();
+  const status  = document.getElementById('form-status');
+
+  if (!name || !email || !message) {
+    status.style.color = 'var(--magenta)';
+    status.textContent = '// ERROR: 모든 필드를 채워주세요';
+    return;
+  }
+
+  this.textContent = '◈ TRANSMITTING...';
+  this.disabled = true;
+  status.style.color = 'var(--cyan)';
+  status.textContent = '// CONNECTING TO SERVER...';
+
+  try {
+    const res = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, email, message })
+    });
+
+    if (res.ok) {
+      this.textContent = '✓ TRANSMITTED';
+      this.style.borderColor = 'var(--cyan)';
+      this.style.color = 'var(--cyan)';
+      status.style.color = 'var(--cyan)';
+      status.textContent = '// MESSAGE_SENT — njh3606@gmail.com 으로 전달됐습니다';
+      document.getElementById('contact-name').value = '';
+      document.getElementById('contact-email').value = '';
+      document.getElementById('contact-message').value = '';
+      setTimeout(() => {
+        this.textContent = '⬡ TRANSMIT_MESSAGE';
+        this.style.borderColor = '';
+        this.style.color = '';
+        this.disabled = false;
+        status.textContent = '';
+      }, 4000);
+    } else {
+      throw new Error('Server error');
+    }
+  } catch(err) {
+    this.textContent = '⬡ TRANSMIT_MESSAGE';
+    this.disabled = false;
+    status.style.color = 'var(--magenta)';
+    status.textContent = '// ERROR: 전송 실패 — 다시 시도해주세요';
+  }
+});
+    </script>
+</body>
+</html>
